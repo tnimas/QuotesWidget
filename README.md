@@ -19,6 +19,8 @@ A customizable quote widget for [Lively Wallpaper](https://www.rocksdanister.com
 2. Create a zip file containing the source folder
 3. Drag and drop it in Lively Wallpaper Library
 
+> **Tip:** To avoid issues with selecting desktop icons, go to Lively **Settings → Wallpaper → Wallpaper Input → Off**
+
 ## Configuration
 
 Right-click the wallpaper in Lively and select **Customize** to access settings:
