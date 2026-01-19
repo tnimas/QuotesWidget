@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8"> 
 <style>
+    *, *::before, *::after {
+        pointer-events: none !important;
+        user-select: none !important;
+    }
     body {
         background: transparent;
         display: flex;
@@ -13,7 +17,7 @@
         font-family: 'Segoe UI Variable Display', 'Segoe UI', -apple-system, sans-serif;
         color: white;
         text-align: center;
-        overflow: hidden; 
+        overflow: hidden;
     }
     .container {
         background: rgba(0, 0, 0, 0.4);
@@ -92,15 +96,15 @@
         window.livelyPropertyListener = function(name, val) {
             switch(name) {
                 case "quoteData":
-                    quoteList = val.split('\n')
-                        .filter(line => line.trim() !== "")
-                        .map(line => {
-                            let parts = line.split('|');
-                            return {
-                                text: parts[0] ? parts[0].trim() : "",
-                                author: parts[1] ? parts[1].trim() : ""
-                            };
-                        });
+                    const raw = val.split('|');
+                    quoteList = [];
+                    for (let i = 1; i < raw.length; i += 2) {
+                        const text = raw[i - 1].trim().replace(/\\n/g, '\n');
+                        const author = raw[i].trim();
+                        if (text) {
+                            quoteList.push({ text, author: author || null });
+                        }
+                    }
                     refreshDisplay();
                     break;
                 case "updateMode":
