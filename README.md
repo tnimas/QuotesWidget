@@ -10,10 +10,14 @@ A customizable quote widget for [Lively Wallpaper](https://www.rocksdanister.com
 - Glassmorphism design with blur effect
 
 ## Installation
+### Option 1: Download Release (Recommended)
+1. Download `QuotesWidget.zip` from the [Releases](../../releases) page
+2. Drag and drop it in Lively Wallpaper Library
 
+### Option 2: From Source
 1. Download or clone this repository
-2. In Lively Wallpaper, click the **+** button to add a new wallpaper
-3. Select the `index.html` file from this folder
+2. Create a zip file containing the source folder
+3. Drag and drop it in Lively Wallpaper Library
 
 ## Configuration
 
