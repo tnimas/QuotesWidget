@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "powershell -Command \"Compress-Archive -Path 'C:\\Users\\tnimas\\Documents\\QuotesWidget\\index.html', 'C:\\Users\\tnimas\\Documents\\QuotesWidget\\LivelyProperties.json', 'C:\\Users\\tnimas\\Documents\\QuotesWidget\\LivelyInfo.json', 'C:\\Users\\tnimas\\Documents\\QuotesWidget\\thumbnail.jpg' -DestinationPath 'C:\\Users\\tnimas\\Documents\\QuotesWidget\\QuotesWidget.zip' -Force\"",
+            "statusMessage": "Creating QuotesWidget.zip"
+          }
+        ]
+      }
+    ]
+  }
+}

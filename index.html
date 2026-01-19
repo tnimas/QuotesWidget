@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"> 
+<style>
+    body {
+        background: transparent;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        font-family: 'Segoe UI Variable Display', 'Segoe UI', -apple-system, sans-serif;
+        color: white;
+        text-align: center;
+        overflow: hidden; 
+    }
+    .container {
+        background: rgba(0, 0, 0, 0.4);
+        padding: 50px;
+        border-radius: 24px;
+        backdrop-filter: blur(15px);
+        -webkit-backdrop-filter: blur(15px);
+        max-width: 900px;
+        width: 80%;
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.4s ease-in-out;
+    }
+    #quote { 
+        font-weight: 300; 
+        line-height: 1.3; 
+        white-space: pre-line; 
+        font-size: 28px;
+        margin: 0;
+    }
+    #author { 
+        margin-top: 30px; 
+        font-size: 0.7em; 
+        opacity: 0.6; 
+        font-style: italic; 
+        display: block;
+    }
+    .fade-in {
+        animation: fadeIn 1s;
+    }
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+</style>
+</head>
+<body>
+    <div class="container fade-in" id="widget">
+        <p id="quote">Loading...</p>
+        <span id="author"></span>
+    </div>
+
+    <script>
+        var quoteList = [];
+        var currentMode = 0;
+
+        function refreshDisplay() {
+            if (quoteList.length === 0) return;
+
+            const now = new Date();
+            let seed;
+            
+            // Logic to determine when to rotate the quote
+            if (currentMode == 0) { // Daily
+                seed = now.getFullYear() * 10000 + (now.getMonth() + 1) * 100 + now.getDate();
+            } else if (currentMode == 1) { // Hourly
+                seed = now.getFullYear() * 1000000 + (now.getMonth() + 1) * 10000 + now.getDate() * 100 + now.getHours();
+            } else { // Every Minute
+                seed = Math.floor(now.getTime() / 60000);
+            }
+
+            const index = seed % quoteList.length;
+            const item = quoteList[index];
+
+            document.getElementById('quote').innerText = item.text;
+            
+            const authorEl = document.getElementById('author');
+            if (item.author) {
+                authorEl.innerText = item.author;
+                authorEl.style.display = "block";
+            } else {
+                authorEl.style.display = "none";
+            }
+        }
+
+        window.livelyPropertyListener = function(name, val) {
+            switch(name) {
+                case "quoteData":
+                    quoteList = val.split('\n')
+                        .filter(line => line.trim() !== "")
+                        .map(line => {
+                            let parts = line.split('|');
+                            return {
+                                text: parts[0] ? parts[0].trim() : "",
+                                author: parts[1] ? parts[1].trim() : ""
+                            };
+                        });
+                    refreshDisplay();
+                    break;
+                case "updateMode":
+                    currentMode = val;
+                    refreshDisplay();
+                    break;
+                case "fontScale":
+                    document.getElementById('quote').style.fontSize = val + "px";
+                    break;
+                case "accentColor":
+                    document.getElementById('widget').style.color = val;
+                    break;
+                case "cardColor":
+                    document.getElementById('widget').style.backgroundColor = val;
+                    break;
+                case "wallpaperBg":
+                    document.body.style.background = val;
+                    break;
+            }
+        };
+
+        // Check for time-based updates every second
+        setInterval(refreshDisplay, 1000);
+    </script>
+</body>
+</html>
